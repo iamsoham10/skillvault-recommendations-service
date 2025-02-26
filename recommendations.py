@@ -1,5 +1,6 @@
 import re
 import nltk
+import external
 
 # Download required NLTK packages
 nltk.download('punkt')
@@ -77,6 +78,12 @@ def get_recommendations(user_resources, db_resources, top_n=3, similarity_thresh
     
     # Sort by similarity score
     recommendations.sort(key=lambda x: x['similarity_score'], reverse=True)
-    
+    # ✅ If no TF-IDF recommendations, use Google Search API
+    # if not recommendations:
+    #     print("No similar resources found in DB. Fetching from Google Search...")
+    search_query = user_resources[0]  # Take the first user resource as the search term
+    randomData = external.google_search(search_query, top_n)
+    recommendations.append(randomData)
+
     return recommendations
 

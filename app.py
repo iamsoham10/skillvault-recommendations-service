@@ -42,6 +42,6 @@ if __name__ == "__main__":
 
 # receive data from node.js backend #
 # process the data (remove stop words, lowercase, lemmatize) #
-# use recommendations.py to get the vectors and calculate cosine similaritiy
-# find if similar resoruces are there in the database
-# return first N similar resources from database else query the external API
+# use recommendations.py to get the vectors and calculate cosine similaritiy #
+# find if similar resoruces are there in the database #
+# return first N similar resources from database else query the external API #
