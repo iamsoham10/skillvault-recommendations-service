@@ -1,8 +1,7 @@
+import random
 import re
 import nltk
 import external
-
-# Download required NLTK packages
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -25,13 +24,13 @@ def preprocess_text(text):
     ]
     return ' '.join(words)
 
-def get_recommendations(user_resources, db_resources, top_n=3, similarity_threshold=0.1):
+def get_recommendations(user_resources, db_resources, top_n, similarity_threshold):
     if not user_resources or not db_resources:
         return []
     
     # create a set of user resources for faster lookup
     user_resource_set = set(user_resources)
-        
+    
     # preprocess user and db resources
     processed_user_resources = [preprocess_text(text) for text in user_resources]
     processed_db_resources = [preprocess_text(text) for text in db_resources]
@@ -76,14 +75,14 @@ def get_recommendations(user_resources, db_resources, top_n=3, similarity_thresh
                 "similarity_score": float(user_similarities[idx])
             })
     
-    # Sort by similarity score
+    # sort by similarity score
     recommendations.sort(key=lambda x: x['similarity_score'], reverse=True)
-    # ✅ If no TF-IDF recommendations, use Google Search API
-    # if not recommendations:
-    #     print("No similar resources found in DB. Fetching from Google Search...")
-    search_query = user_resources[0]  # Take the first user resource as the search term
-    randomData = external.google_search(search_query, top_n)
-    recommendations.append(randomData)
+    # if no TF-IDF recommendations use Google Search API
+    if recommendations == []:
+        search_query = random.choice(processed_user_resources)  # take random user resource as the search query
+        no_of_results = 4
+        customSearchData = external.google_search(search_query, no_of_results)
+        recommendations.append(customSearchData)
 
     return recommendations
 
