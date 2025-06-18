@@ -21,6 +21,10 @@ import requests
 
 app = Flask(__name__)
 
+@app.route("/", methods=["GET"])
+def index():
+    return "Hello, World!"
+
 @app.route("/accept-resources", methods=["POST"])
 def receive_resources():
     resource_data = request.get_json()
